@@ -1,63 +1,63 @@
 
-
 import "reflect-metadata"; // this shim is required
 import {createExpressServer, createKoaServer, useContainer, RoutingControllersOptions, Action} from "routing-controllers";
 
-import { RepositoryFactory } from "./repository/RepositoryFactory";
-import { Logger } from "./Logger/Logger";
-import { AuthorizationChecker } from "./preprocessors/AuthorizationChecker";
+import { RepositoryFactory } from "./4-data-layer/repository/RepositoryFactory";
+import { Logger } from "./5-system-wide-layer/Logger/Logger";
+import { AuthorizationChecker } from "./1-security-layer/userPreprocessors/AuthorizationChecker";
 import { Container, Service, Inject } from "typedi";
-import { CurrentUserChecker } from "./preprocessors/CurrentUserChecker";
+import { CurrentUserChecker } from "./1-security-layer/userPreprocessors/CurrentUserChecker";
  
 const routePrefix = "/api" ;
 
 
-@Service()
-class Server {
+// @Service()
+// class Server {
 
-    @Inject()
-    private authorizationChecker :AuthorizationChecker;
+//     @Inject()
+//     private authorizationChecker :AuthorizationChecker;
 
-    @Inject()
-    private currentUserChecker :CurrentUserChecker;
+//     @Inject()
+//     private currentUserChecker :CurrentUserChecker;
 
 
-    public start() { 
+//     public start() { 
 
-        const routingControllersOptions :RoutingControllersOptions  = {
+//         const routingControllersOptions :RoutingControllersOptions  = {
         
-            routePrefix: routePrefix,
-            controllers: [__dirname + "/controllers/*.ts"] ,
+//             routePrefix: routePrefix,
+//             controllers: [__dirname + "2-application-layer/controllers/*.ts"] ,
         
-            authorizationChecker: this.authorizationChecker.check ,
-            currentUserChecker : this.currentUserChecker.check ,
-        } ;
+//             authorizationChecker: this.authorizationChecker.check ,
+//             currentUserChecker : this.currentUserChecker.check ,
+//         } ;
 
-        useContainer(Container);
+//         useContainer(Container);
 
-        // ExpressServer
-        // const app = createExpressServer(routingControllersOptions);
+//         // ExpressServer
+//         // const app = createExpressServer(routingControllersOptions);
 
-        // KoaServer 
-        const app = createKoaServer(routingControllersOptions);
+//         // KoaServer 
+//         const app = createKoaServer(routingControllersOptions);
 
-        app.listen(3001);
-  }
-}
+//         app.listen(3001);
+//   }
+// }
 
+useContainer(Container);
 
 function initializeApp() {
 
     const routingControllersOptions :RoutingControllersOptions  = {
 
         routePrefix: routePrefix,
-        controllers: [__dirname + "/controllers/*.ts"] ,
+        controllers: [__dirname + "/2-application-layer/controllers/*.ts"] ,
     
         // authorizationChecker: AuthorizationChecker.authorizationChecker ,
         //currentUserChecker
     } ;
 
-    useContainer(Container);
+    
 
     // ExpressServer
     // const app = createExpressServer(routingControllersOptions);
